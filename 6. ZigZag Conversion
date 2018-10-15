@@ -1,0 +1,59 @@
+## https://leetcode.com/problems/zigzag-conversion/description/
+
+## Initial thought, but exceed time limit. 
+
+class Solution(object):
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """
+        explanation = ['']*numRows
+        
+        counter = 0
+        pointer = 0
+        limit = 2*numRows-2
+        size = len(s)
+        
+        if numRows == 1 or numRows >= size:
+            return s
+        
+        
+        while counter < size:
+            # for numRow = 4
+            # 0 1 2 3 4 5 6 7 8 9  # Counter
+            # 0 1 2 3 2 1 0 1 2 3  # Target 
+            # 0 1 2 3 4 5 0 1 2 3  # counter%(2*numRows-2)
+            # 0 1 2 3 2 1 0 1 2 3  # temp if temp <= 3 else (6-temp) 
+            
+            temp = counter%limit
+            pointer = temp if temp <= 3 else (6-temp) 
+            explanation[pointer] += s[counter]
+        return ''.join(explanation)
+        
+        
+## Discussion
+## Having a step that changes direction at each end
+class Solution(object):
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """
+        if numRows == 1 or numRows >= len(s):
+            return s
+
+        L = [''] * numRows
+        index, step = 0, 1
+
+        for x in s:
+            L[index] += x
+            if index == 0:
+                step = 1
+            elif index == numRows -1:
+                step = -1
+            index += step
+
+        return ''.join(L)
