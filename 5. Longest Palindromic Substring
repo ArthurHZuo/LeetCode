@@ -1,0 +1,35 @@
+## one shot pass. 
+## Used a nested loop to check dual core situation
+
+class Solution(object):
+    def longestPalindrome(self, x):
+        if len(x) == 0: return ''
+        if len(x) == 1: return x
+        
+        temp = ''
+        lenth = len(x)
+        for i in range(0, lenth):
+            lp = i - 1
+            rp = i + 1
+            while lp >= 0 and rp < lenth:
+                if x[lp] == x[rp]:
+                    lp -= 1
+                    rp += 1
+                else: 
+                    break
+            if len(temp) <= (rp - lp - 1):
+                temp = x[lp+1:rp]
+            ## Check dual core
+            if i+1 < lenth:
+                if x[i+1] == x[i]:
+                    lp = i - 1
+                    rp = i + 2
+                    while lp >= 0 and rp < lenth:
+                        if x[lp] == x[rp]:
+                            lp -= 1
+                            rp += 1
+                        else: 
+                            break
+                    if len(temp) <= (rp - lp - 1):
+                        temp = x[lp+1:rp]
+        return temp
