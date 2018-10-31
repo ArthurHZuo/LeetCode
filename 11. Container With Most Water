@@ -1,0 +1,69 @@
+## O(n^2) algorithm
+## Exceed runtime
+
+class Solution(object):
+    def maxArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        l = len(height)
+        if l == 2:
+            return min(height[0], height[1])
+
+        temp = 0
+        for i in range(0, l):
+            for j in range(i+1, l):
+                temp = max(temp, min(height[i], height[j]) * (j - i))
+        return temp
+        
+################################################################################
+## New approach, look for the farest bigger value. Pass test, but fail run time again
+class Solution(object):
+    def maxArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        l = len(height)
+        if l == 2:
+            return min(height[0], height[1])
+        temp = 0
+        for i in range(0, l):
+            vi = height[i]
+            for j in range(l-1, i, -1):
+                if height[j] >= vi:
+                    temp = max(temp, vi*(j-i))
+                    break
+        for i in range(l-1, 0, -1):
+            vi = height[i]
+            for j in range(0,i):
+                if height[j] >= vi:
+                    temp = max(temp, vi*(i-j))
+                    break       
+        return temp
+###########################################################################
+### Solution from suggestion
+def maxArea(self, height):
+    """
+    :type height: List[int]
+    :rtype: int
+    """
+
+    # Brute force solution. 
+    # Go through each array element get the minimum of 2 elements.
+    # Multiply that by how far they are from each other and see if it's the max. 
+    return_max_area = 0
+    # New idea take max of either 2 and if one's bigger move the other one.
+
+    start = 0
+    end = len(height) - 1
+
+    while start < end:
+        min_height = min(height[start], height[end])
+        return_max_area = max(return_max_area, (end - start) * (min_height))
+        if height[start] > height[end]:
+            end -= 1
+        else:
+            start += 1
+    return return_max_area
